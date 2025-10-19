@@ -21,8 +21,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\6LetterWordChallenge.Application\6LetterWordChallenge.Application.csproj" />
-      <ProjectReference Include="..\6LetterWordChallenge.Infrastructure\6LetterWordChallenge.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\6LetterWordChallenge.Application\6LetterWordChallenge.Application.csproj" />
+      <ProjectReference Include="..\..\6LetterWordChallenge.Infrastructure\6LetterWordChallenge.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
