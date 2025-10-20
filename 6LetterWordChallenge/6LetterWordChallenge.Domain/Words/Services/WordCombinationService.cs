@@ -4,24 +4,62 @@ namespace _6LetterWordChallenge.Domain.Words.Services;
 
 public class WordCombinationService
 {
-    public List<WordCombination> GetWordCombinationsByLength(HashSet<Word> words, int wordLength)
+    public List<WordCombination> GetWordCombinationsByLength(HashSet<Word> words, int wordLength, int combinationCount)
     {
-        var list = new List<WordCombination>();
-        foreach (var word1 in words)
+        var results = new List<WordCombination>();
+        var allWords = words.Select(w => w.Text).ToHashSet();
+        
+        // Group words by length to optimize search
+        var wordsByLength = words
+            .Where(w => w.Text.Length < wordLength)
+            .GroupBy(w => w.Text.Length)
+            .ToDictionary(g => g.Key, g => g.Select(w => w.Text).ToList());
+
+        FindCombinationsRecursively(allWords, wordsByLength, results, new List<string>(), wordLength, combinationCount, 0);
+        
+        return results;
+    }
+
+    private void FindCombinationsRecursively(
+        HashSet<string> allWords,
+        Dictionary<int, List<string>> wordsByLength,
+        List<WordCombination> result,
+        List<string> currentCombination,
+        int targetLength,
+        int wordCombinations,
+        int currentLength)
+    {
+        if (currentCombination.Count == wordCombinations)
         {
-            foreach (var word2 in words)
+            if (currentLength == targetLength)
             {
-                if (word1.Text.Length + word2.Text.Length == wordLength)
+                string combinedWord = string.Concat(currentCombination);
+                if (allWords.Contains(combinedWord))
                 {
-                    var combination = new Word($"{word1.Text}{word2.Text}");
-                    if (words.Contains(combination))
-                    {
-                        list.Add(new WordCombination(word1.Text, word2.Text));   
-                    }
+                    result.Add(new WordCombination(new List<string>(currentCombination)));
+                }
+            }
+            return;
+        }
+
+        int remainingLength = targetLength - currentLength;
+        int remainingWordCombinations = wordCombinations - currentCombination.Count;
+        
+        // Ensure we leave room for remaining words
+        // This guarantees at least 1 character for each remaining word
+        int maxWordLength = remainingLength - (remainingWordCombinations - 1);
+        
+        for (int len = 1; len <= maxWordLength; len++)
+        {
+            if (wordsByLength.ContainsKey(len))
+            {
+                foreach (var word in wordsByLength[len])
+                {
+                    currentCombination.Add(word);
+                    FindCombinationsRecursively(allWords, wordsByLength, result, currentCombination, targetLength, wordCombinations, currentLength + len);
+                    currentCombination.RemoveAt(currentCombination.Count - 1);
                 }
             }
         }
-
-        return list;
-    } 
+    }
 }

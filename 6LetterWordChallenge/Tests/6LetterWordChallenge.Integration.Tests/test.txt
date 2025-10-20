@@ -4,3 +4,7 @@ apple
 ba
 nana
 banana
+ant
+wer
+pen
+antwerpen

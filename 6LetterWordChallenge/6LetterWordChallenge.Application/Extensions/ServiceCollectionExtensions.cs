@@ -1,8 +1,8 @@
 using _6LetterWordChallenge.Application.PipelineBehaviours;
-using _6LetterWordChallenge.Domain.Words.Services;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using WordCombinationService = _6LetterWordChallenge.Domain.Words.Services.WordCombinationService;
 
 namespace _6LetterWordChallenge.Application.Extensions;
 

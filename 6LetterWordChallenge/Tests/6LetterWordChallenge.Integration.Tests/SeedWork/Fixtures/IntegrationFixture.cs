@@ -23,7 +23,6 @@ public class IntegrationFixture : IDisposable
 
     public void Dispose()
     {
-        // Clean up if needed
         if (ServiceProvider is IDisposable disposable)
         {
             disposable.Dispose();

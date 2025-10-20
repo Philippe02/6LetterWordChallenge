@@ -29,9 +29,10 @@ public class WordCombinationServiceTests
         };
         
         var wordLength = 5;
+        var wordCombinations = 2;
 
         // Act
-        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength);
+        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength, wordCombinations);
         var appleCombination = result.Where(w => w.Text.Contains("apple")).First();
         var trainCombination = result.Where(w => w.Text.Contains("train")).First();
 
@@ -53,9 +54,10 @@ public class WordCombinationServiceTests
             new Word("banana")
         };
         var wordLength = 5;
+        var wordCombinations = 2;
 
         // Act
-        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength);
+        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength, wordCombinations);
 
         // Assert
         Assert.NotNull(result);
@@ -73,9 +75,10 @@ public class WordCombinationServiceTests
             // new Word("apple"), No complete word
         };
         var wordLength = 5;
+        var wordCombinations = 2;
 
         // Act
-        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength);
+        var result = _wordCombinationService.GetWordCombinationsByLength(words, wordLength, wordCombinations);
 
         // Assert
         Assert.NotNull(result);

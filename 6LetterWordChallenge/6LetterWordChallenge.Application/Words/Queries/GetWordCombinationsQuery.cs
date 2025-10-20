@@ -6,10 +6,11 @@ using MediatR;
 
 namespace _6LetterWordChallenge.Application.Words.Queries;
 
-public class GetWordCombinationsQuery(string fileName, int wordLength) : IRequest<WordCombinationsDto>
+public class GetWordCombinationsQuery(string fileName, int wordLength, int wordCombinations) : IRequest<WordCombinationsDto>
 {
     public string FileName { get; } = fileName;
     public int WordLength { get; } = wordLength;
+    public int WordCombinations { get; } = wordCombinations;
 }
 
 internal class GetWordCombinationsQueryHandler(IFileReaderRepository fileReaderRepository, WordCombinationService wordCombinationService) : IRequestHandler<GetWordCombinationsQuery, WordCombinationsDto>
@@ -22,7 +23,7 @@ internal class GetWordCombinationsQueryHandler(IFileReaderRepository fileReaderR
         }
         
         var words = await fileReaderRepository.GetWordsAsHashSetAsync(request.FileName, cancellationToken);
-        var wordCombinations = wordCombinationService.GetWordCombinationsByLength(words, request.WordLength);
+        var wordCombinations = wordCombinationService.GetWordCombinationsByLength(words, request.WordLength, request.WordCombinations);
         
         return new WordCombinationsDto(wordCombinations, words.Count);
     }
@@ -36,6 +37,9 @@ public class GetWordCombinationsQueryValidator : AbstractValidator<GetWordCombin
             .NotEmpty();
         
         RuleFor(query => query.WordLength)
+            .GreaterThan(0);
+        
+        RuleFor(query => query.WordCombinations)
             .GreaterThan(0);
     }
 }

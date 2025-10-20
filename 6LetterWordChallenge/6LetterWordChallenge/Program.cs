@@ -20,7 +20,7 @@ class Program
         
         var mediator = serviceProvider.GetRequiredService<IMediator>();
         
-        var query = new GetWordCombinationsQuery("input.txt", 6);
+        var query = new GetWordCombinationsQuery("input.txt", 6, 2);
         var result = await mediator.Send(query);
         
         foreach (var combination in result.WordCombinations)
